@@ -1,28 +1,8 @@
-// paper > Rock > Scissors
-// Paper > Scissors
-// Win, Lose, Draw
-
-// function getComputeChoice randomly returns Rock, Paper or Scissors
-// human player input -----> prompt
-// function playRound (playerSelection, computerSelection) returns "You Lose! Paper beats Rock"
-// function game() Use the previous function inside of this one to play a 5 round game that keeps score and reports a winner or loser at the end.
-
 const choices = ["rock", "paper", "scissors"];
-
+const resultDisplay = document.getElementById("result");
+console.log(resultDisplay);
 function getComputerChoice() {
-  const compChoice = choices[Math.floor(Math.random() * choices.length)];
-  return compChoice;
-}
-
-function getPlayerChoice() {
-  let playerInput = prompt(
-    "Please select Rock, Paper or scissors"
-  ).toLowerCase();
-
-  while (!validateInput(playerInput)) {
-    playerInput = prompt("Please select Rock, Paper or Scissors").toLowerCase();
-  }
-  return playerInput;
+  return choices[Math.floor(Math.random() * choices.length)];
 }
 
 function playRound(playerSelection, computerSelection) {
@@ -49,40 +29,45 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-// console.log(playerSelection, computerSelection)
-
-// console.log(playRound(playerSelection, computerSelection))
-
 function game() {
   let myWins = 0;
   let computerWins = 0;
-  let games = 0;
+  let rounds = 0;
 
-  while (games < 5) {
-    const playerSelection = getPlayerChoice();
-    const computerSelection = getComputerChoice();
-    let winner = playRound(playerSelection, computerSelection);
-    // let playerSelection = prompt("What's your selection").toLowerCase()
+  const buttons = document.querySelectorAll("button");
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (rounds < 5) {
+        const playerSelection = button.id;
+        const computerSelection = getComputerChoice();
+        const winner = playRound(playerSelection, computerSelection);
 
-    // console.log(winner)
-    if (winner === "you") {
-      myWins += 1;
-    } else if (winner == "computer") {
-      computerWins += 1;
-    }
-    games++;
-  }
-  if (myWins > computerWins) {
-    console.log("You win");
-  } else if (myWins < computerWins) {
-    console.log("You lose");
-  } else if (myWins == computerWins) {
-    console.log("It's a draw");
-  }
-}
+        if (winner === "you") {
+          resultDisplay.textContent = "You win this round";
+          myWins++;
+        } else if (winner == "computer") {
+          resultDisplay.textContent = "Computer wins this round";
+          computerWins++;
+        } else {
+          resultDisplay.textContent = "It's a draw this round!";
+        }
+        rounds++;
 
-function validateInput(choice) {
-  return choices.includes(choice);
+        const div = document.createElement("div");
+        if (rounds === 5) {
+          let finalResult = "";
+          if (myWins > computerWins) {
+            finalResult = "You win the game!";
+          } else if (myWins < computerWins) {
+            finalResult = "Computer wins the game";
+          } else if (myWins == computerWins) {
+            finalResult.textContent = "It's a draw!";
+          }
+          resultDisplay.textContent = finalResult;
+        }
+      }
+    });
+  });
 }
 
 game();
