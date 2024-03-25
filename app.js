@@ -15,22 +15,17 @@ function getComputerChoice() {
 }
 
 function getPlayerChoice() {
-  let playerInput = prompt("Please select Rock, Paper or scissors");
-  while (playerInput === null) {
-    playerInput = prompt("Please select Rock, Paper or scissors ");
+  let playerInput = prompt(
+    "Please select Rock, Paper or scissors"
+  ).toLowerCase();
+
+  while (!validateInput(playerInput)) {
+    playerInput = prompt("Please select Rock, Paper or Scissors").toLowerCase();
   }
-  playerInput.toLowerCase();
-  while ((check = false)) {
-    prompt("Type Rock, Paper, or scissors correctly");
-  }
-  playerInput = playerInput.toLowerCase();
-  check = validateInput(playerInput);
+  return playerInput;
 }
 
-function playRound(playerChoice, computerChoice) {
-  const playerSelection = getPlayerChoice();
-  const computerSelection = getComputerChoice();
-
+function playRound(playerSelection, computerSelection) {
   if (playerSelection === computerSelection) {
     return "It's a draw";
   } else if (
@@ -64,8 +59,10 @@ function game() {
   let games = 0;
 
   while (games < 5) {
+    const playerSelection = getPlayerChoice();
+    const computerSelection = getComputerChoice();
+    let winner = playRound(playerSelection, computerSelection);
     // let playerSelection = prompt("What's your selection").toLowerCase()
-    let winner = playRound();
 
     // console.log(winner)
     if (winner === "you") {
